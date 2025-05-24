@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_all_tracks"
+        android:title="Треки"
+        android:icon="@drawable/loop"/>
+    <item
+        android:id="@+id/menu_player"
+        android:title="Плеер"
+        android:icon="@drawable/play"/>
+</menu>

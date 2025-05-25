@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "music-player-app"
 include(":app")
- 
+include(":serializer")

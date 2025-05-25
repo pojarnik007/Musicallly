@@ -1,9 +1,11 @@
 package com.example.music_player_app.domain.repository
 
 import com.example.music_player_app.domain.model.Track
+import java.io.File
 
-interface TrackRepository {
-    fun getTracks(): List<Track>
-    fun addTrack(track: Track)
-    fun deleteTrack(trackId: String)
+interface RemoteTrackRepository {
+    suspend fun getTracks(): List<Track>
+    suspend fun addTrack(track: Track, audioFile: File)
+    suspend fun deleteTrack(trackId: String)
+    suspend fun downloadAudio(trackId: Int): ByteArray?
 }

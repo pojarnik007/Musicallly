@@ -25,7 +25,7 @@ class TrackAdapter(
         holder.binding.textArtist.text = track.artist
         holder.binding.textDuration.text = "${track.duration}s"
         holder.binding.buttonDelete.setOnClickListener {
-            onDelete(track.id)
+            onDelete(track.id.toString())
         }
     }
 }

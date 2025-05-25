@@ -15,8 +15,8 @@ import com.example.music_player_app.databinding.FragmentAllTracksBinding
 import com.example.music_player_app.di.ServiceLocator
 import com.example.music_player_app.domain.model.Track
 import com.example.music_player_app.presentation.TrackViewModel
-import com.example.music_player_app.presentation.adapters.TrackAdapter
-import java.util.*
+import java.io.File
+import java.io.FileOutputStream
 
 @Suppress("DEPRECATION")
 class AllTracksFragment : Fragment() {
@@ -30,11 +30,9 @@ class AllTracksFragment : Fragment() {
         onTrackClick = { track -> viewModel.selectTrack(track) }
     )
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentAllTracksBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,19 +46,13 @@ class AllTracksFragment : Fragment() {
             startActivityForResult(intent, REQUEST_CODE_PICK_AUDIO)
         }
 
-        viewModel.tracks.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-        }
-        viewModel.loadTracks()
-        // В PlayerFragment
-
-// В observe(tracks) — передавай selectedId:
         viewModel.tracks.observe(viewLifecycleOwner) { tracks ->
             adapter.submitList(tracks, viewModel.selectedTrack.value?.id)
         }
         viewModel.selectedTrack.observe(viewLifecycleOwner) {
             adapter.submitList(viewModel.tracks.value ?: emptyList(), it?.id)
         }
+        viewModel.loadTracks()
     }
 
     @Deprecated("Deprecated in Java")
@@ -68,13 +60,14 @@ class AllTracksFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_PICK_AUDIO && resultCode == Activity.RESULT_OK) {
             data?.data?.let { uri ->
-                val track = getTrackFromUri(uri)
-                viewModel.addTrack(track)
+                val (track, file) = getTrackAndFileFromUri(uri)
+                // Теперь передаем и трек, и файл!
+                viewModel.addTrack(track, file)
             }
         }
     }
 
-    private fun getTrackFromUri(uri: Uri): Track {
+    private fun getTrackAndFileFromUri(uri: Uri): Pair<Track, File> {
         var title = "Unknown"
         val context = requireContext()
         context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
@@ -84,13 +77,22 @@ class AllTracksFragment : Fragment() {
             }
         }
         // Можно также извлечь duration, artist и т.д. через MediaMetadataRetriever
-        return Track(
-            id = UUID.randomUUID().toString(),
+        // Для примера artist и duration дефолтные, можешь добавить извлечение если нужно
+
+        // Сохраняем выбранный файл во временный
+        val inputStream = context.contentResolver.openInputStream(uri)!!
+        val tempFile = File.createTempFile("audio", null, context.cacheDir)
+        FileOutputStream(tempFile).use { output ->
+            inputStream.copyTo(output)
+        }
+
+        val track = Track(
+            id = 0,
             title = title,
             artist = "Unknown",
-            url = uri.toString(),
             duration = 0
         )
+        return Pair(track, tempFile)
     }
 
     companion object {

@@ -1,8 +1,7 @@
 package com.example.music_player_app.domain.usecase
 
-import com.example.music_player_app.domain.model.Track
-import com.example.music_player_app.domain.repository.TrackRepository
+import com.example.music_player_app.domain.repository.RemoteTrackRepository
 
-class GetTracksUseCase(private val repository: TrackRepository) {
-    operator fun invoke(): List<Track> = repository.getTracks()
+class GetTracksUseCase(private val repository: RemoteTrackRepository) {
+    suspend operator fun invoke() = repository.getTracks()
 }

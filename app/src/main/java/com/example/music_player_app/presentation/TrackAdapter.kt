@@ -13,9 +13,9 @@ class TrackAdapter(
 ) : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
 
     private var tracks: List<Track> = emptyList()
-    private var selectedTrackId: String? = null
+    private var selectedTrackId: Int? = null
 
-    fun submitList(list: List<Track>, selectedId: String? = null) {
+    fun submitList(list: List<Track>, selectedId: Int? = null) {
         tracks = list
         selectedTrackId = selectedId
         notifyDataSetChanged()
@@ -35,19 +35,15 @@ class TrackAdapter(
         holder.binding.textTitle.text = track.title
         holder.binding.textArtist.text = track.artist
         holder.binding.textDuration.text = "${track.duration}s"
-        holder.binding.buttonDelete.setOnClickListener { onDelete(track.id) }
+        holder.binding.buttonDelete.setOnClickListener { onDelete(track.id.toString()) }
         holder.itemView.setOnClickListener {
             val prevSelected = selectedTrackId
             selectedTrackId = track.id
             onTrackClick(track)
-            // обновляем только старый и новый выделенный
             notifyDataSetChanged()
         }
-        // Меняем фон
-        val isSelected = track.id == selectedTrackId
         holder.itemView.setBackgroundResource(
-            if (isSelected) R.drawable.bg_selected_track else android.R.color.transparent
+            if (track.id == selectedTrackId) R.drawable.bg_selected_track else android.R.color.transparent
         )
     }
-
 }

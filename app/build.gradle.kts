@@ -2,11 +2,14 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
 }
 
 android {
     namespace = "com.example.music_player_app"
     compileSdk = 35
+
+
 
     defaultConfig {
         applicationId = "com.example.music_player_app"
@@ -33,15 +36,18 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+
     }
     buildFeatures {
         compose = true
         viewBinding = true
+
     }
 }
 
 dependencies {
-
+    implementation ("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -52,6 +58,10 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.room.common.jvm)
+    //  implementation(project(":serializer"))
+    implementation ("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -64,4 +74,6 @@ dependencies {
     implementation ("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
     implementation ("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.1.0-beta01")
+    implementation ("com.auth0:java-jwt:4.4.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 }

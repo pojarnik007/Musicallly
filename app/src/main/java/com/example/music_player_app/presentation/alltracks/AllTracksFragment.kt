@@ -1,6 +1,7 @@
 package com.example.music_player_app.presentation.alltracks
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -57,6 +58,11 @@ class AllTracksFragment : Fragment() {
             intent.type = "audio/*"
             startActivityForResult(intent, REQUEST_CODE_PICK_AUDIO)
         }
+        val prefs = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val userName = prefs.getString("user_name", null)
+
+        // Показываем кнопку только если пользователь admin
+        binding.buttonAddTrack.visibility = if (userName == "admin") View.VISIBLE else View.GONE
         binding.buttonRefresh.setOnClickListener {
             viewModel.syncTracks()
         }

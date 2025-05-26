@@ -7,4 +7,8 @@
         android:id="@+id/menu_player"
         android:title="Плеер"
         android:icon="@drawable/play"/>
+    <item
+        android:id="@+id/menu_user"
+        android:title="Пользователь"
+        android:icon="@drawable/ic_user"/> <!-- добавьте ic_user в drawable -->
 </menu>

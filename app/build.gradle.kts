@@ -62,7 +62,9 @@ dependencies {
     //  implementation(project(":serializer"))
     implementation ("com.squareup.okhttp3:okhttp:4.12.0")
     implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation(libs.androidx.junit.ktx)
     testImplementation(libs.junit)
+    testImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -79,4 +81,9 @@ dependencies {
     implementation("androidx.room:room-runtime:2.7.0-alpha02")
     implementation("androidx.room:room-ktx:2.7.0-alpha02")
     kapt("androidx.room:room-compiler:2.7.0-alpha02")
+    testImplementation("org.mockito:mockito-core:4.11.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    // Для unit-тестов
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.0")
+    testImplementation("org.mockito:mockito-core:5.2.0")
 }

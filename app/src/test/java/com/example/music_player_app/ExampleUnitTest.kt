@@ -1,17 +1,21 @@
 package com.example.music_player_app
 
+import org.junit.Assert.*
 import org.junit.Test
 
-import org.junit.Assert.*
-
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
-class ExampleUnitTest {
+class TimeUtilTest {
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun testFormatMillis() {
+        assertEquals("0:00", TimeUtil.formatMillis(0))
+        assertEquals("1:05", TimeUtil.formatMillis(65_000))
+        assertEquals("10:59", TimeUtil.formatMillis(659_000))
+    }
+}
+
+object TimeUtil {
+    fun formatMillis(ms: Int): String {
+        val minutes = ms / 1000 / 60
+        val seconds = (ms / 1000) % 60
+        return String.format("%d:%02d", minutes, seconds)
     }
 }

@@ -5,7 +5,7 @@ import java.io.File
 
 interface RemoteTrackRepository {
     suspend fun getTracks(): List<TrackEntity>
-    suspend fun addTrack(track: TrackEntity, audioFile: File? = null) // если требуется файл
+    suspend fun addTrack(track: TrackEntity, audioFile: File?)
     suspend fun deleteTrack(trackId: Int)
     suspend fun downloadAudio(trackId: Int): ByteArray?
 }

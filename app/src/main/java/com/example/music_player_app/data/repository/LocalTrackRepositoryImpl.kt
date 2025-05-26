@@ -1,12 +1,16 @@
 package com.example.music_player_app.data.repository
 
-import com.example.music_player_app.domain.local.TrackDao
+import android.content.Context
+import com.example.music_player_app.domain.local.AppDatabase
 import com.example.music_player_app.domain.model.TrackEntity
 import com.example.music_player_app.domain.repository.LocalTrackRepository
 
-class LocalTrackRepositoryImpl(private val trackDao: TrackDao) : LocalTrackRepository {
-    override suspend fun getAllTracks() = trackDao.getAll()
-    override suspend fun insertTrack(track: TrackEntity) = trackDao.insert(track)
-    override suspend fun insertTracks(tracks: List<TrackEntity>) = trackDao.insertAll(tracks)
-    override suspend fun deleteTrack(trackId: Int) = trackDao.deleteById(trackId)
+class LocalTrackRepositoryImpl(context: Context) : LocalTrackRepository {
+    private val dao = AppDatabase.getInstance(context).trackDao()
+
+    override suspend fun getAllTracks(): List<TrackEntity> = dao.getAll()
+    override suspend fun insertTrack(track: TrackEntity) = dao.insert(track)
+    override suspend fun deleteTrack(trackId: Int) = dao.deleteById(trackId)
+    override suspend fun insertAll(tracks: List<TrackEntity>) = dao.insertAll(tracks)
+    override suspend fun deleteNotIn(ids: List<Int>) = dao.deleteNotIn(ids)
 }

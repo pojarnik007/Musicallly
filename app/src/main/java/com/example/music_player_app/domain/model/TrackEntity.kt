@@ -7,9 +7,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 @Entity(tableName = "tracks")
 data class TrackEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey val id: Int,
     val name: String,
     val artist: String,
     val duration: Int,
-    val localPath: String // путь к локальному файлу
+    val localPath: String? = null // nullable, не сериализуется с сервера
 )

@@ -1,5 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="Theme.YourApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/backgroundMain</item>
+        <item name="android:textColorPrimary">@color/textMain</item>
+        <item name="android:buttonStyle">@style/Widget.YourApp.Button</item>
+    </style>
 
-    <style name="Theme.Musicplayerapp" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Widget.YourApp.Button" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/buttonBg</item>
+        <item name="android:textColor">@color/buttonText</item>
+        <item name="elevation">4dp</item>
+        <item name="android:stateListAnimator">@anim/button_elevation</item>
+        <item name="android:shadowColor">@color/buttonShadow</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">4</item>
+    </style>
 </resources>

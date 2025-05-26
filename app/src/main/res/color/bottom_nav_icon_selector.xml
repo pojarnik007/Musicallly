@@ -1,4 +1,4 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="#7C4DFF" android:state_checked="true" /> <!-- Фиолетовый выбран -->
-    <item android:color="#FFFFFF" android:state_checked="false" /> <!-- Белый не выбран -->
+    <item android:color="@color/surfaceSelected" android:state_checked="true" /> <!-- Фиолетовый выбран -->
+    <item android:color="@color/surface" android:state_checked="false" /> <!-- Белый не выбран -->
 </selector>

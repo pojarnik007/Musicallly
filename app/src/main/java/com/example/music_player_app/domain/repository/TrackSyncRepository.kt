@@ -1,9 +1,10 @@
 package com.example.music_player_app.domain.repository
 
 import com.example.music_player_app.domain.model.TrackEntity
+import java.io.File
 
 interface TrackSyncRepository {
     suspend fun syncTracks()
-    suspend fun addTrackRemote(track: TrackEntity)
-    suspend fun deleteTrackRemote(trackId: Int)
+    suspend fun addTrack(track: TrackEntity, audioFile: File)
+    suspend fun deleteTrack(trackId: Int)
 }

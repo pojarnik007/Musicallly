@@ -9,10 +9,9 @@ import com.example.music_player_app.presentation.TrackViewModelFactory
 
 object ServiceLocator {
     fun provideTrackViewModelFactory(context: Context): TrackViewModelFactory {
-        val db = AppDatabase.getInstance(context)
-        val localRepo = LocalTrackRepositoryImpl(db.trackDao())
+        val localRepo = LocalTrackRepositoryImpl(context)
         val remoteRepo = RemoteTrackRepositoryImpl()
-        val syncRepo = TrackSyncRepositoryImpl(remoteRepo, db.trackDao())
+        val syncRepo = TrackSyncRepositoryImpl(context, remoteRepo, localRepo)
         return TrackViewModelFactory(localRepo, syncRepo)
     }
 }

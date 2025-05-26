@@ -1,53 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/backgroundMain"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="24dp"
     android:gravity="center_horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/imageCover"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
         android:layout_gravity="center"
         android:scaleType="centerCrop"
-        android:src="@drawable/music_note"
-        android:layout_marginTop="110dp"/>
+        android:src="@drawable/music_note_grey"
+        android:background="@drawable/bg_circle_gray"
+        android:elevation="6dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="24dp" />
+
     <TextView
         android:id="@+id/textTitle"
-        android:text="Title"
+        android:text="Название трека"
         android:textStyle="bold"
-        android:textSize="18sp"
+        android:textSize="20sp"
+        android:textColor="@color/textMain"
         android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:ellipsize="end" />
+
     <TextView
         android:id="@+id/textArtist"
-        android:text="Artist"
+        android:text="Исполнитель"
         android:textSize="16sp"
+        android:textColor="@color/textSecondary"
         android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:maxLines="1"
+        android:ellipsize="end" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:id="@+id/textCurrentTime"
+            android:text="0:00"
+            android:textSize="14sp"
+            android:textColor="@color/textSecondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="32dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:progressTint="@color/colorPrimary"
+            android:thumbTint="@color/colorPrimary" />
+
+        <TextView
+            android:id="@+id/textTotalTime"
+            android:text="0:00"
+            android:textSize="14sp"
+            android:textColor="@color/textSecondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
     <LinearLayout
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Button
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+
+        <ImageButton
             android:id="@+id/buttonPrev"
-            android:text="⏮"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <Button
+            android:src="@drawable/ic_prev"
+            android:background="@drawable/bg_button_rounded"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:contentDescription="Назад"
+            android:elevation="2dp"
+            app:tint="@color/iconTint" />
+
+        <ImageButton
             android:id="@+id/buttonPlayPause"
-            android:text="⏯"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <Button
+            android:src="@drawable/ic_play"
+            android:background="@drawable/bg_button_rounded"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:contentDescription="Пуск"
+            android:elevation="2dp"
+            app:tint="@color/iconTint" />
+
+        <ImageButton
             android:id="@+id/buttonNext"
-            android:text="⏭"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:src="@drawable/ic_next"
+            android:background="@drawable/bg_button_rounded"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:contentDescription="Вперед"
+            android:elevation="2dp"
+            app:tint="@color/iconTint" />
     </LinearLayout>
 </LinearLayout>

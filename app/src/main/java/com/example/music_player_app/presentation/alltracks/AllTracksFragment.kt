@@ -15,23 +15,34 @@ import com.example.music_player_app.databinding.FragmentAllTracksBinding
 import com.example.music_player_app.di.ServiceLocator
 import com.example.music_player_app.domain.model.TrackEntity
 import com.example.music_player_app.presentation.TrackViewModel
+import java.io.File
+import java.io.FileOutputStream
 
 @Suppress("DEPRECATION")
 class AllTracksFragment : Fragment() {
+
     private val viewModel: TrackViewModel by activityViewModels {
         ServiceLocator.provideTrackViewModelFactory(requireContext())
     }
+
     private var _binding: FragmentAllTracksBinding? = null
     private val binding get() = _binding!!
+
     val adapter = com.example.music_player_app.presentation.TrackAdapter(
         onDelete = { trackId -> viewModel.deleteTrack(trackId) },
-        onTrackClick = { trackEntity -> viewModel.selectTrack(trackEntity) }
+        onTrackClick = { trackEntity ->
+            viewModel.selectTrack(trackEntity)
+            // Переход в PlayerFragment, например через Navigation:
+            // findNavController().navigate(R.id.action_allTracksFragment_to_playerFragment)
+        }
     )
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentAllTracksBinding.inflate(inflater, container, false)
         return binding.root
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.syncTracks()
@@ -46,7 +57,9 @@ class AllTracksFragment : Fragment() {
             intent.type = "audio/*"
             startActivityForResult(intent, REQUEST_CODE_PICK_AUDIO)
         }
-
+        binding.buttonRefresh.setOnClickListener {
+            viewModel.syncTracks()
+        }
         viewModel.tracks.observe(viewLifecycleOwner) { tracks ->
             adapter.submitList(tracks, viewModel.selectedTrack.value?.id)
         }
@@ -60,13 +73,14 @@ class AllTracksFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_PICK_AUDIO && resultCode == Activity.RESULT_OK) {
             data?.data?.let { uri ->
-                val trackEntity = getTrackEntityFromUri(uri)
-                viewModel.addTrack(trackEntity)
+                val (trackEntity, audioFile) = getTrackEntityAndFileFromUri(uri)
+                viewModel.addTrack(trackEntity, audioFile)
             }
         }
     }
 
-    private fun getTrackEntityFromUri(uri: Uri): TrackEntity {
+    // Сохраняет файл в приватную папку и возвращает пару TrackEntity и File
+    private fun getTrackEntityAndFileFromUri(uri: Uri): Pair<TrackEntity, File> {
         var title = "Unknown"
         val context = requireContext()
         context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
@@ -75,11 +89,21 @@ class AllTracksFragment : Fragment() {
                 title = cursor.getString(nameIndex)
             }
         }
-        return TrackEntity(
+        val fileName = "local_${System.currentTimeMillis()}_${title}"
+        val file = File(context.filesDir, fileName)
+        context.contentResolver.openInputStream(uri)?.use { input ->
+            FileOutputStream(file).use { output ->
+                input.copyTo(output)
+            }
+        }
+        val track = TrackEntity(
+            id = 0, // id будет назначен сервером при добавлении!
             name = title,
             artist = "Unknown",
-            duration = 0
+            duration = 0,
+            localPath = null // путь будет добавлен после синхронизации!
         )
+        return Pair(track, file)
     }
 
     companion object {

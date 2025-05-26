@@ -42,7 +42,7 @@ class TrackAdapter(
             notifyDataSetChanged()
         }
         holder.itemView.setBackgroundResource(
-            if (track.id == selectedTrackId) R.drawable.bg_selected_track else android.R.color.transparent
+            if (track.id == selectedTrackId) R.drawable.bg_track_selected else android.R.color.transparent
         )
     }
 }

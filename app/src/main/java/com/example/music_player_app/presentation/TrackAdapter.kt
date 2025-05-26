@@ -5,17 +5,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.music_player_app.R
 import com.example.music_player_app.databinding.ItemTrackBinding
-import com.example.music_player_app.domain.model.Track
+import com.example.music_player_app.domain.model.TrackEntity
 
 class TrackAdapter(
-    private val onDelete: (String) -> Unit,
-    private val onTrackClick: (Track) -> Unit
+    private val onDelete: (Int) -> Unit,
+    private val onTrackClick: (TrackEntity) -> Unit
 ) : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
 
-    private var tracks: List<Track> = emptyList()
+    private var tracks: List<TrackEntity> = emptyList()
     private var selectedTrackId: Int? = null
 
-    fun submitList(list: List<Track>, selectedId: Int? = null) {
+    fun submitList(list: List<TrackEntity>, selectedId: Int? = null) {
         tracks = list
         selectedTrackId = selectedId
         notifyDataSetChanged()
@@ -32,12 +32,11 @@ class TrackAdapter(
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         val track = tracks[position]
-        holder.binding.textTitle.text = track.title
+        holder.binding.textTitle.text = track.name
         holder.binding.textArtist.text = track.artist
         holder.binding.textDuration.text = "${track.duration}s"
-        holder.binding.buttonDelete.setOnClickListener { onDelete(track.id.toString()) }
+        holder.binding.buttonDelete.setOnClickListener { onDelete(track.id) }
         holder.itemView.setOnClickListener {
-            val prevSelected = selectedTrackId
             selectedTrackId = track.id
             onTrackClick(track)
             notifyDataSetChanged()

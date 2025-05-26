@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.music_player_app.R
 import com.example.music_player_app.databinding.FragmentPlayerBinding
+import com.example.music_player_app.domain.model.TrackEntity
 import com.example.music_player_app.presentation.TrackViewModel
-import java.io.File
 
 class PlayerFragment : Fragment() {
     private var _binding: FragmentPlayerBinding? = null
@@ -18,7 +18,6 @@ class PlayerFragment : Fragment() {
     private val viewModel: TrackViewModel by activityViewModels()
     private var mediaPlayer: MediaPlayer? = null
     private var currentTrackIndex = 0
-    private var tempAudioFile: File? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentPlayerBinding.inflate(inflater, container, false)
@@ -27,10 +26,8 @@ class PlayerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.tracks.observe(viewLifecycleOwner) { tracks ->
-            val selected = viewModel.selectedTrack.value
-            val startIndex = tracks.indexOfFirst { it.id == selected?.id }.takeIf { it >= 0 } ?: 0
             if (tracks.isNotEmpty()) {
-                currentTrackIndex = startIndex
+                currentTrackIndex = 0
                 playTrack(tracks[currentTrackIndex])
             }
         }
@@ -56,37 +53,21 @@ class PlayerFragment : Fragment() {
         }
     }
 
-    private fun playTrack(track: com.example.music_player_app.domain.model.Track) {
+    private fun playTrack(track: TrackEntity) {
         mediaPlayer?.release()
-        tempAudioFile?.delete()
-        tempAudioFile = null
-
-        // Загружаем аудиофайл с сервера
-        viewModel.downloadAudio(track.id ?: return)
-        viewModel.audioData.observe(viewLifecycleOwner) { audioBytes ->
-            audioBytes?.let {
-                // Сохраняем ByteArray во временный файл
-                val tempFile = File.createTempFile("track", ".mp3", requireContext().cacheDir)
-                tempFile.writeBytes(it)
-                tempAudioFile = tempFile
-
-                mediaPlayer = MediaPlayer().apply {
-                    setDataSource(tempFile.absolutePath)
-                    prepare()
-                    start()
-                }
-            }
+        mediaPlayer = MediaPlayer().apply {
+            setDataSource(track.localPath)
+            setOnPreparedListener { start() }
+            prepareAsync()
         }
-        binding.textTitle.text = track.title
+        binding.textTitle.text = track.name
         binding.textArtist.text = track.artist
-        // Для картинки можно придумать что-то аналогичное, либо оставить дефолт
         binding.imageCover.setImageResource(R.drawable.music_note)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         mediaPlayer?.release()
-        tempAudioFile?.delete()
         _binding = null
     }
 }

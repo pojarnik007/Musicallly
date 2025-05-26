@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
+    id ("kotlin-kapt")
 }
 
 android {
@@ -58,7 +59,6 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.room.common.jvm)
     //  implementation(project(":serializer"))
     implementation ("com.squareup.okhttp3:okhttp:4.12.0")
     implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
@@ -76,4 +76,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout-compose:1.1.0-beta01")
     implementation ("com.auth0:java-jwt:4.4.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation("androidx.room:room-runtime:2.7.0-alpha02")
+    implementation("androidx.room:room-ktx:2.7.0-alpha02")
+    kapt("androidx.room:room-compiler:2.7.0-alpha02")
 }

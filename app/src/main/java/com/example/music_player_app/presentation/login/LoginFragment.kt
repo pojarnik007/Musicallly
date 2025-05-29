@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.music_player_app.data.repository.NetworkConfig
 import com.example.music_player_app.databinding.FragmentLoginBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -55,7 +56,7 @@ class LoginFragment(
                 val json = """{"username":"$login","password":"$pass"}"""
                 val requestBody = json.toRequestBody("application/json".toMediaTypeOrNull())
                 val request = Request.Builder()
-                    .url("http://192.168.213.211:3000/login")
+                    .url("${NetworkConfig.BASE_URL}/login")
                     .post(requestBody)
                     .build()
                 client.newCall(request).execute().use { response ->
@@ -63,9 +64,12 @@ class LoginFragment(
                     if (response.isSuccessful) {
                         // В вашем LoginFragment (или где происходит вход)
                         val prefs = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                        val isAdmin = (login == "admin")
                         prefs.edit()
+
                             .putString("user_name", login) // realUserName — имя пользователя из БД
                             .putBoolean("is_logged_in", true)
+                            .putBoolean("is_admin", isAdmin)
                             .apply()
                         // Сохраняем логин в SharedPreferences
                         val sp = activity?.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)

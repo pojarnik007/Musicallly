@@ -3,6 +3,7 @@ package com.example.music_player_app.presentation
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.music_player_app.R
@@ -12,9 +13,13 @@ import com.example.music_player_app.presentation.login.LoginFragment
 import com.example.music_player_app.presentation.login.RegisterFragment
 import com.example.music_player_app.presentation.player.PlayerFragment
 import com.example.music_player_app.presentation.login.UserFragment
+import com.example.music_player_app.presentation.player.MiniPlayerFragment
+import com.example.music_player_app.presentation.player.PlayerViewModel
+import kotlinx.coroutines.awaitAll
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private val playerViewModel: PlayerViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,14 +35,24 @@ class MainActivity : AppCompatActivity() {
             openLogin()
         }
 
+        // Динамически добавить MiniPlayerFragment, если его нет
+        if (supportFragmentManager.findFragmentById(R.id.fragmentMiniPlayer) == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentMiniPlayer, MiniPlayerFragment())
+                .commit()
+        }
+
+        playerViewModel.currentTrack.observe(this) { updateMiniPlayerVisibility() }
+        supportFragmentManager.addOnBackStackChangedListener { updateMiniPlayerVisibility() }
+
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             val current = supportFragmentManager.findFragmentById(R.id.fragment_container)
+            updateMiniPlayerVisibility()
             if (current is LoginFragment || current is RegisterFragment) {
                 return@setOnItemSelectedListener false
             }
             when (item.itemId) {
                 R.id.menu_all_tracks -> openFragment(AllTracksFragment())
-                R.id.menu_player -> openFragment(PlayerFragment())
                 R.id.menu_user -> openFragment(UserFragment(onLogout = {
                     openLogin()
                 }))
@@ -45,6 +60,7 @@ class MainActivity : AppCompatActivity() {
             true
         }
     }
+
 
     private fun openLogin() {
         openFragment(LoginFragment(
@@ -62,12 +78,20 @@ class MainActivity : AppCompatActivity() {
         ))
     }
 
+
     private fun openFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .commit()
-        // Скрываем или показываем нижний бар
-        binding.bottomNavigation.visibility =
-            if (fragment is LoginFragment || fragment is RegisterFragment) View.GONE else View.VISIBLE
+        updateMiniPlayerVisibility()
     }
+
+    private fun updateMiniPlayerVisibility() {
+        val miniPlayer = findViewById<View>(R.id.fragmentMiniPlayer)
+        val current = supportFragmentManager.findFragmentById(R.id.fragment_container)
+        val isPlayerVisible = current is PlayerFragment
+        val track = playerViewModel.currentTrack.value
+        miniPlayer?.visibility = if (track != null && !isPlayerVisible) View.VISIBLE else View.GONE
+    }
+
 }

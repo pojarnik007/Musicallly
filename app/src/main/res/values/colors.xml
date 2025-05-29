@@ -11,6 +11,7 @@
         <color name="buttonBg">#E6E6EB</color>
         <color name="buttonText">#4E5057</color>
         <color name="iconTint">#61677C</color>
+        <color name="miniPlayerBg">#E0E2E7</color> <!-- пример: чуть темнее backgroundMain, но светлее surface -->
         <color name="divider">#CCCCCC</color>
         <color name="buttonShadow">#33000000</color> <!-- Добавлен цвет тени для кнопок -->
 

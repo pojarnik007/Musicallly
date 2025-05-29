@@ -1,5 +1,6 @@
 package com.example.music_player_app.presentation
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.music_player_app.domain.model.TrackEntity
 import com.example.music_player_app.domain.repository.LocalTrackRepository
@@ -33,7 +34,9 @@ class TrackViewModel(
 
     fun loadTracks() {
         viewModelScope.launch {
-            _tracks.value = localRepo.getAllTracks()
+            val result = localRepo.getAllTracks()
+            Log.d("TrackViewModel", "loadTracks: $result")
+            _tracks.value = result
         }
     }
 

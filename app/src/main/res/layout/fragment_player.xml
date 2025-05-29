@@ -9,6 +9,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageButton
+        android:id="@+id/buttonCollapse"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="start"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_expand_more"
+        android:padding="8dp"
+        app:tint="@color/iconTint" />
+
     <ImageView
         android:id="@+id/imageCover"
         android:layout_width="180dp"

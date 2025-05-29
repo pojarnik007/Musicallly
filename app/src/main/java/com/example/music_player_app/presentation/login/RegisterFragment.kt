@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.music_player_app.data.repository.NetworkConfig
 import com.example.music_player_app.databinding.FragmentRegisterBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -50,7 +51,7 @@ class RegisterFragment(
                 val json = """{"username":"$login","password":"$pass"}"""
                 val requestBody = json.toRequestBody("application/json".toMediaTypeOrNull())
                 val request = Request.Builder()
-                    .url("http://192.168.213.211:3000/register")
+                    .url("${NetworkConfig.BASE_URL}/register")
                     .post(requestBody)
                     .build()
                 client.newCall(request).execute().use { response ->

@@ -13,8 +13,6 @@ class UserFragment(
     private val onLogout: () -> Unit
 ) : Fragment() {
 
-
-
     private var _binding: FragmentUserBinding? = null
     private val binding get() = _binding!!
 

@@ -1,0 +1,67 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/miniPlayerRoot"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:background="@color/miniPlayerBg"
+    android:padding="8dp">
+
+    <!-- Контент миниплеера -->
+    <LinearLayout
+        android:id="@+id/miniplayerContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/imageCover"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/music_note" />
+
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Track Title"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"/>
+
+        <ImageButton
+            android:id="@+id/buttonPrev"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_prev"
+            android:background="@android:color/transparent" />
+
+        <ImageButton
+            android:id="@+id/buttonPlayPause"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_play"
+            android:background="@android:color/transparent" />
+
+        <ImageButton
+            android:id="@+id/buttonNext"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_next"
+            android:background="@android:color/transparent" />
+    </LinearLayout>
+
+    <!-- Оверлей только на левую (не-кнопочную) область -->
+    <View
+        android:id="@+id/miniPlayerClickableOverlay"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:layout_weight="1"
+        android:background="@android:color/transparent"
+        android:clickable="true"
+        android:focusable="true"/>
+</FrameLayout>

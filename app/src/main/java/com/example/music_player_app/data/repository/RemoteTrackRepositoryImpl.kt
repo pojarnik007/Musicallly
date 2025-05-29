@@ -11,7 +11,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
 class RemoteTrackRepositoryImpl(
-    private val baseUrl: String = "http://192.168.213.211:3000"
+    private val baseUrl: String = NetworkConfig.BASE_URL
 ) : RemoteTrackRepository {
 
     private val client = OkHttpClient()
@@ -20,6 +20,7 @@ class RemoteTrackRepositoryImpl(
     override suspend fun getTracks(): List<TrackEntity> = withContext(Dispatchers.IO) {
         val request = Request.Builder()
             .url("$baseUrl/tracks")
+            .get()
             .build()
         client.newCall(request).execute().use { response ->
             if (!response.isSuccessful) return@use emptyList()
